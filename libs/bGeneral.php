@@ -248,24 +248,27 @@ function cRadio(string $text, string $campo, array &$errores, array $valores, bo
  * @param boolean $required
  * @return boolean|string
  */
-function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required = TRUE)
+function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required)
 {
 
     // echo "<script>console.log('Inicio: ".$errores."');</script>";
     if (is_array($_FILES[$nombre])) {
-        echo "<script>console.log('hola');</script>";
-        if ((!$required) && $_FILES[$nombre]['error'] === 4){
-        echo "<script>console.log('4 ');</script>";
-            return true;}
-
-        if ($_FILES[$nombre]['error'] != 0 && $_FILES[$nombre] != null) {
+        echo "<script>console.log('".$_FILES[$nombre]['error']."');</script>";
+        if (($required) && $_FILES[$nombre]['error'] === 4){
+        echo "<script>console.log('required ');</script>";
+            return true;
+        }
+            // echo "<script>console.log('".$_FILES[$nombre]['error']."');</script>";
+            // foreach ($_FILES[$nombre] as $f) {
+            //     // echo "<script>console.log('prueba " . $_FILES[$nombre] . "');</script>";
+            //     echo "<script>console.log('prueba " . $f . "');</script>";
+            // }
+            // echo "<script>console.log('-------');</script>";
+        if ($_FILES[$nombre]['error'] != 0) {
             $errores["$nombre"] = "Error al subir el archivo " . $nombre . ". Prueba de nuevo";
-            foreach ($_FILES[$nombre] as $f) {
-                // echo "<script>console.log('prueba " . $_FILES[$nombre] . "');</script>";
-                echo "<script>console.log('prueba " . $f . "');</script>";
-            }
-            echo "<script>console.log('" . $_FILES["$nombre"] . "');</script>";
-            print($errores["$nombre"]);
+            echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
+            // echo "<script>console.log('" . $_FILES["$nombre"] . "');</script>";
+            // print($errores["$nombre"]);
             return false;
         } else {
 
@@ -292,7 +295,7 @@ function cFile(string $nombre, array &$errores, array $extensionesValidas, strin
                 return false;
             }
 
-            echo "<script>console.log('pepe');</script>";
+            // echo "<script>console.log('pepe');</script>";
 
             if (empty($errores["$nombre"])) {
 

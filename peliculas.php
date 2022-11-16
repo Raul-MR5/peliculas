@@ -42,7 +42,7 @@ else {
         $errores['titulo'] = 'El titulo no es correcto';
         $error = true;
     }
-    // if ((!checkdate($fechaEstreno))) {
+    // if ((!checkdate($fechaEstreno) && $fechaEstreno!=null)) {
     //     $errores['fechaEstreno'] = 'La fecha de estreno no es correcta';
     //     $error = true;
     // }
@@ -68,18 +68,20 @@ else {
         $errores['fotoCartel'] = 'La foto de cartel no es correcta';
         $error = true;
     }
-    if ((!cFile("fotoReparto_1", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true) && $fotoReparto_1!=null)) {
+    $dirFotoReparto_1 = cFile("fotoReparto_1", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true);
+    if ((!$dirFotoReparto_1)) {
         $errores['fotoReparto_1'] = 'La foto de reparto no es correcta';
         $error = true;
     }
-    if ((!cFile("fotoReparto_2", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true) && $fotoReparto_2!=null)) {
-        $errores['fotoReparto_2'] = 'La foto reparto no es correcta';
+    $dirFotoReparto_2 = cFile("fotoReparto_2", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true);
+    if ((!$dirFotoReparto_2)) {
+        $errores['fotoReparto_2'] = 'La foto de reparto no es correcta';
         $error = true;
     }
     //Sino se han encontrado errores pasamos a otra página
     if (empty($errores)) {
         echo "<script>console.log('dentro');</script>";
-        header("location:correcto.php?titulo=$titulo&fechaEstreno=$fechaEstreno&duracion=$duracion&genero=$genero&pais=$pais&sinopsis=$sinopsis&fotoCartel=$dirFotoCartel");
+        header("location:correcto.php?titulo=$titulo&fechaEstreno=$fechaEstreno&duracion=$duracion&genero=$genero&pais=$pais&sinopsis=$sinopsis&fotoCartel=$dirFotoCartel&fotoReparto_1=$dirFotoReparto_1&fotoReparto_2=$dirFotoReparto_2");
     } else {
         //Volvemos a mostrar el formulario con errores &&fotoReparto_1=$fotoReparto_1&fotoReparto_2=$fotoReparto_2
         include('form.php');
