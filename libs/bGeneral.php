@@ -251,53 +251,76 @@ function cRadio(string $text, string $campo, array &$errores, array $valores, bo
 function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required = TRUE)
 {
 
-    if ((!$required) && $_FILES[$nombre]['error'] === 4)
-        return true;
+    // echo "<script>console.log('Inicio: ".$errores."');</script>";
+    if (is_array($_FILES[$nombre])) {
+        echo "<script>console.log('hola');</script>";
+        if ((!$required) && $_FILES[$nombre]['error'] === 4){
+        echo "<script>console.log('4 ');</script>";
+            return true;}
 
-    if ($_FILES[$nombre]['error'] != 0) {
-        $errores["$nombre"] = "Error al subir el archivo " . $nombre . ". Prueba de nuevo";
-        return false;
-    } else {
-
-        $nombreArchivo = strip_tags($_FILES["$nombre"]['name']);
-
-        $directorioTemp = $_FILES["$nombre"]['tmp_name'];
-
-        $tamanyoFile = filesize($directorioTemp);
-
-
-        $extension = strtolower(pathinfo($nombreArchivo, PATHINFO_EXTENSION));
-
-        if (!in_array($extension, $extensionesValidas)) {
-            $errores["$nombre"] = "La extensión del archivo no es válida";
+        if ($_FILES[$nombre]['error'] != 0 && $_FILES[$nombre] != null) {
+            $errores["$nombre"] = "Error al subir el archivo " . $nombre . ". Prueba de nuevo";
+            foreach ($_FILES[$nombre] as $f) {
+                // echo "<script>console.log('prueba " . $_FILES[$nombre] . "');</script>";
+                echo "<script>console.log('prueba " . $f . "');</script>";
+            }
+            echo "<script>console.log('" . $_FILES["$nombre"] . "');</script>";
+            print($errores["$nombre"]);
             return false;
-        }
+        } else {
 
-        if ($tamanyoFile > $max_file_size) {
-            $errores["$nombre"] = "La imagen debe de tener un tamaño inferior a $max_file_size kb";
-            return false;
-        }
+            $nombreArchivo = strip_tags($_FILES["$nombre"]['name']);
+
+            $directorioTemp = $_FILES["$nombre"]['tmp_name'];
+
+            $tamanyoFile = filesize($directorioTemp);
 
 
-        if (empty($errores)) {
+            $extension = strtolower(pathinfo($nombreArchivo, PATHINFO_EXTENSION));
 
-            if (is_dir($directorio)) {
+            if (!in_array($extension, $extensionesValidas)) {
+                $errores["$nombre"] = "La extensión del archivo no es válida";
+                echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
+                print($errores["$nombre"]);
+                return false;
+            }
 
-                $nombreArchivo = is_file($directorio . DIRECTORY_SEPARATOR . $nombreArchivo) ? time() . $nombreArchivo : $nombreArchivo;
-                $nombreCompleto = $directorio . DIRECTORY_SEPARATOR . $nombreArchivo;
+            if ($tamanyoFile > $max_file_size) {
+                $errores["$nombre"] = "La imagen debe de tener un tamaño inferior a $max_file_size kb";
+                echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
+                print($errores["$nombre"]);
+                return false;
+            }
 
-                if (move_uploaded_file($directorioTemp, $nombreCompleto)) {
+            echo "<script>console.log('pepe');</script>";
 
-                    return $nombreCompleto;
+            if (empty($errores["$nombre"])) {
+
+                if (is_dir($directorio)) {
+
+                    $nombreArchivo = is_file($directorio . DIRECTORY_SEPARATOR . $nombreArchivo) ? time() . $nombreArchivo : $nombreArchivo;
+                    $nombreCompleto = $directorio . DIRECTORY_SEPARATOR . $nombreArchivo;
+
+                    if (move_uploaded_file($directorioTemp, $nombreCompleto)) {
+                        echo "<script>console.log('" . $nombreCompleto . "');</script>";
+                        return $nombreCompleto;
+                    } else {
+                        $errores["$nombre"] = "Ha habido un error al subir el fichero";
+                        echo "<script>console.log('dentro" . $errores["$nombre"] . "');</script>";
+                        print($errores["$nombre"]);
+                        return false;
+                    }
                 } else {
                     $errores["$nombre"] = "Ha habido un error al subir el fichero";
+                    echo "<script>console.log('medio" . $errores["$nombre"] . "');</script>";
+                    print($errores["$nombre"]);
                     return false;
                 }
             } else {
-                $errores["$nombre"] = "Ha habido un error al subir el fichero";
-                return false;
+                echo "<script>console.log('fuera" . $errores . "');</script>";
             }
         }
     }
+
 }
     ?>

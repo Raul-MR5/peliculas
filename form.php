@@ -1,4 +1,4 @@
-<form action="" method='post'>
+<form action="" method='post' enctype="multipart/form-data">
     Título: <input type="text" name="titulo" value="<?= isset($titulo) ? $titulo : ""; ?>" required>
     <br>
     <?php
