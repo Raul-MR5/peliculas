@@ -1,4 +1,4 @@
-<form action="" method='post'>
+<form action="" method='post' enctype="multipart/form-data">
     Título: <input type="text" name="titulo" value="<?= isset($titulo) ? $titulo : ""; ?>" required>
     <br>
     <?php
@@ -27,7 +27,7 @@
 
     <br>
 
-    Duración: <input type="number" name="duracion" value="<?= isset($duracion) ? $duracion : ""; ?>">
+    Duración: <input type="number" name="duracion" value="<?= isset($duracion) ? $duracion : 0; ?>">
     <br>
     <br>
 
@@ -59,7 +59,7 @@
 
     <br>
 
-    Foto cartel: <input type="file" name="fotoCartel" value="<?= isset($fotoCartel) ? $fotoCartel : ""; ?>" required>
+    Foto cartel: <input type="file" name="fotoCartel" required>
     <br>
     <?php
         echo (isset($errores['fotoCartel'])) ? "$errores[fotoCartel] <br>" : "";
@@ -67,13 +67,14 @@
 
     <br>
 
+<!-- 
     Foto reparto 1: <input type="file" name="fotoReparto_1" value="<?= isset($fotoReparto_1) ? $fotoReparto_1 : ""; ?>">
     <br>
     <br>
 
     Foto reparto 2: <input type="file" name="fotoReparto_2" value="<?= isset($fotoReparto_2) ? $fotoReparto_2 : ""; ?>">
     <br>
-    <br>
+    <br> -->
 
     <input TYPE="submit" name="bAceptar" VALUE="aceptar">
 </form>

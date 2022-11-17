@@ -28,7 +28,7 @@ else {
     //Sanitizamos
     $titulo = recoge("titulo");
     $fechaEstreno = recoge('fechaEstreno');
-    $genero = recogeArray('genero');
+    $genero = recoge('genero');
     $duracion = recoge("duracion");
     $pais = recoge('pais');
     $sinopsis = recoge("sinopsis");
@@ -44,10 +44,10 @@ else {
     //     $errores['fechaEstreno'] = 'La fecha de estreno no es correcta';
     //     $error = true;
     // }
-    if ((!cCheck($genero, "genero", $errores, $generos))) {
-        $errores['genero'] = 'El genero no es correcto';
-        $error = true;
-    }
+    // if ((!cCheck($genero, "genero", $errores, $generos))) {
+    //     $errores['genero'] = 'El genero no es correcto';
+    //     $error = true;
+    // }
     if ((!cNum($duracion))) {
         $errores['duracion'] = 'La duracion no es correcta';
         $error = true;
@@ -60,23 +60,35 @@ else {
         $errores['sinopsis'] = 'La sinopsis no es correcta';
         $error = true;
     }
-    if ((!cFile("$fotoCartel", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true))) {
+    if ((!cFile("fotoCartel", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true))) {
         $errores['fotoCartel'] = 'La foto de cartel no es correcta';
         $error = true;
     }
-    if ((!cFile($fotoReparto_1, $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true))) {
-        $errores['fotoReparto_1'] = 'La foto de reparto no es correcta';
-        $error = true;
-    }
-    if ((!cFile($fotoReparto_2, $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true))) {
-        $errores['fotoReparto_2'] = 'La foto reparto no es correcta';
-        $error = true;
-    }
+    // if ((!cFile($fotoReparto_1, $errores, $extensionesValidas, $rutaImagenes, $maxFichero, false))) {
+    //     $errores['fotoReparto_1'] = 'La foto de reparto no es correcta';
+    //     $error = true;
+    // }
+    // if ((!cFile($fotoReparto_2, $errores, $extensionesValidas, $rutaImagenes, $maxFichero, false))) {
+    //     $errores['fotoReparto_2'] = 'La foto reparto no es correcta';
+    //     $error = true;
+    // }
     //Sino se han encontrado errores pasamos a otra página
     if (empty($errores)) {
-        header("location:correcto.php?titulo=$titulo&genero=$genero&pais=$pais&sinopsis=$sinopsis&fotoCartel=$fotoCartel");
+        echo "<script>console.log('Debug Objects: " . "empty" . "' );</script>";
+        // $arrayGeneros = "";
+        // foreach ($genero as $g) {
+        //     print($genero[1]);
+        //     $arrayGeneros += $g;
+        // }
+        header('location:correcto.php?titulo='.$titulo.'&fechaEstreno='.$fechaEstreno.'&pais='.$pais.'&sinopsis='.$sinopsis.'&fotoCartel='.$_FILES["fotoCartel"].'&duracion='.$duracion.'');
     } else {
-        //Volvemos a mostrar el formulario con errores fechaEstreno=&duracion=$duracion$fechaEstreno&&fotoReparto_1=$fotoReparto_1&fotoReparto_2=$fotoReparto_2
+        foreach ($errores as $e) {
+            echo "<script>console.log('Debug Objects: " . $e . "' );</script>";
+        }
+        //Volvemos a mostrar el formulario con errores genero[]=a&genero[]=b&fotoReparto_1=$fotoReparto_1&fotoReparto_2=$fotoReparto_2
+        // foreach ($errores as $e) {
+        //     print($e);
+        // }
         include('form.php');
     }
 }

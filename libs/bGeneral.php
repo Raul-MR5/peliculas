@@ -250,12 +250,12 @@ function cRadio(string $text, string $campo, array &$errores, array $valores, bo
  */
 function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required = TRUE)
 {
-
     if ((!$required) && $_FILES[$nombre]['error'] === 4)
         return true;
 
     if ($_FILES[$nombre]['error'] != 0) {
         $errores["$nombre"] = "Error al subir el archivo " . $nombre . ". Prueba de nuevo";
+        echo "<script>console.log('Debug Objects: " . $errores["$nombre"] . "' );</script>";
         return false;
     } else {
 
@@ -270,11 +270,13 @@ function cFile(string $nombre, array &$errores, array $extensionesValidas, strin
 
         if (!in_array($extension, $extensionesValidas)) {
             $errores["$nombre"] = "La extensión del archivo no es válida";
+            echo "<script>console.log('Debug Objects: " . $errores["$nombre"] . "' );</script>";
             return false;
         }
 
         if ($tamanyoFile > $max_file_size) {
             $errores["$nombre"] = "La imagen debe de tener un tamaño inferior a $max_file_size kb";
+            echo "<script>console.log('Debug Objects: " . $errores["$nombre"] . "' );</script>";
             return false;
         }
 
@@ -291,10 +293,12 @@ function cFile(string $nombre, array &$errores, array $extensionesValidas, strin
                     return $nombreCompleto;
                 } else {
                     $errores["$nombre"] = "Ha habido un error al subir el fichero";
+                    echo "<script>console.log('Debug Objects: " . $errores["$nombre"] . "' );</script>";
                     return false;
                 }
             } else {
                 $errores["$nombre"] = "Ha habido un error al subir el fichero";
+                echo "<script>console.log('Debug Objects: " . $errores["$nombre"] . "' );</script>";
                 return false;
             }
         }
