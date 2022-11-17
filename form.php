@@ -16,7 +16,7 @@
     if (is_array($generos))
     {
         foreach ($generos as $g)
-            echo '<input type="checkbox" name="genero" value="'.$g.'">'.$g.' ';
+            echo '<input type="checkbox" name="genero[]" value="'.$g.'">'.$g.' ';
     }
     ?>
 

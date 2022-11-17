@@ -28,14 +28,10 @@ else {
     //Sanitizamos
     $titulo = recoge("titulo");
     $fechaEstreno = recoge('fechaEstreno');
-    $genero = recogeArray('genero');
+    $genero = isset($_POST['genero']) ? $_POST['genero'] : [];
     $duracion = recoge("duracion");
     $pais = recoge('pais');
     $sinopsis = recoge("sinopsis");
-    $fotoCartel = recoge('fotoCartel');
-    $fotoReparto_1 = recoge("fotoReparto_1");
-    $fotoReparto_2 = recoge('fotoReparto_2');
-    echo "<script>console.log('".$fotoReparto_2."');</script>";
 
     //Validamos
     if ((!cTexto($titulo, "titulo", $errores, 30, 1, true, true))) {
@@ -46,11 +42,11 @@ else {
     //     $errores['fechaEstreno'] = 'La fecha de estreno no es correcta';
     //     $error = true;
     // }
-    // if ((!cCheck($genero, "genero", $errores, $generos))) {
-    //     $errores['genero'] = 'El genero no es correcto';
-    //     $error = true;
-    // }
-    if ((!cNum($duracion) && $duracion!=null)) {
+    if ((!cCheck($genero, "genero", $errores, $generos))) {
+        $errores['genero'] = 'El genero no es correcto';
+        $error = true;
+    }
+    if ((!cNum($duracion) && $duracion != null)) {
         $errores['duracion'] = 'La duracion no es correcta';
         $error = true;
     }
@@ -64,7 +60,6 @@ else {
     }
     $dirFotoCartel = cFile("fotoCartel", $errores, $extensionesValidas, $rutaImagenes, $maxFichero, true);
     if ((!$dirFotoCartel)) {
-        echo "<script>console.log('peta');</script>";
         $errores['fotoCartel'] = 'La foto de cartel no es correcta';
         $error = true;
     }
@@ -80,19 +75,23 @@ else {
     }
     //Sino se han encontrado errores pasamos a otra página
     if (empty($errores)) {
-        echo "<script>console.log('dentro');</script>";
-        header("location:correcto.php?titulo=$titulo&fechaEstreno=$fechaEstreno&duracion=$duracion&genero=$genero&pais=$pais&sinopsis=$sinopsis&fotoCartel=$dirFotoCartel&fotoReparto_1=$dirFotoReparto_1&fotoReparto_2=$dirFotoReparto_2");
+        $arrayGeneros = "";
+        $templateGenero = "&genero[]=";
+        if (is_array($genero)) {
+            foreach ($genero as $g) {
+                $arrayGeneros .= $templateGenero.$g;
+            }
+        }
+
+        header("location:correcto.php?titulo=$titulo&fechaEstreno=$fechaEstreno&duracion=$duracion$arrayGeneros&pais=$pais&sinopsis=$sinopsis&fotoCartel=$dirFotoCartel&fotoReparto_1=$dirFotoReparto_1&fotoReparto_2=$dirFotoReparto_2");
     } else {
         //Volvemos a mostrar el formulario con errores &&fotoReparto_1=$fotoReparto_1&fotoReparto_2=$fotoReparto_2
         include('form.php');
-        foreach ($errores as $e) {
-            echo "<script>console.log('fuera".$e."');</script>";
-        }
     }
 }
 ?>
 
 
 <?php
-    pie();
+pie();
 ?>

@@ -248,27 +248,17 @@ function cRadio(string $text, string $campo, array &$errores, array $valores, bo
  * @param boolean $required
  * @return boolean|string
  */
-function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required)
+function cFile(string $nombre, array &$errores, array $extensionesValidas, string $directorio, int $max_file_size, bool $required = TRUE)
 {
 
     // echo "<script>console.log('Inicio: ".$errores."');</script>";
     if (is_array($_FILES[$nombre])) {
-        echo "<script>console.log('".$_FILES[$nombre]['error']."');</script>";
         if (($required) && $_FILES[$nombre]['error'] === 4){
-        echo "<script>console.log('required ');</script>";
             return true;
         }
-            // echo "<script>console.log('".$_FILES[$nombre]['error']."');</script>";
-            // foreach ($_FILES[$nombre] as $f) {
-            //     // echo "<script>console.log('prueba " . $_FILES[$nombre] . "');</script>";
-            //     echo "<script>console.log('prueba " . $f . "');</script>";
-            // }
-            // echo "<script>console.log('-------');</script>";
+
         if ($_FILES[$nombre]['error'] != 0) {
             $errores["$nombre"] = "Error al subir el archivo " . $nombre . ". Prueba de nuevo";
-            echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
-            // echo "<script>console.log('" . $_FILES["$nombre"] . "');</script>";
-            // print($errores["$nombre"]);
             return false;
         } else {
 
@@ -283,15 +273,11 @@ function cFile(string $nombre, array &$errores, array $extensionesValidas, strin
 
             if (!in_array($extension, $extensionesValidas)) {
                 $errores["$nombre"] = "La extensión del archivo no es válida";
-                echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
-                print($errores["$nombre"]);
                 return false;
             }
 
             if ($tamanyoFile > $max_file_size) {
                 $errores["$nombre"] = "La imagen debe de tener un tamaño inferior a $max_file_size kb";
-                echo "<script>console.log('" . $errores["$nombre"] . "');</script>";
-                print($errores["$nombre"]);
                 return false;
             }
 
@@ -305,22 +291,15 @@ function cFile(string $nombre, array &$errores, array $extensionesValidas, strin
                     $nombreCompleto = $directorio . DIRECTORY_SEPARATOR . $nombreArchivo;
 
                     if (move_uploaded_file($directorioTemp, $nombreCompleto)) {
-                        echo "<script>console.log('" . $nombreCompleto . "');</script>";
                         return $nombreCompleto;
                     } else {
                         $errores["$nombre"] = "Ha habido un error al subir el fichero";
-                        echo "<script>console.log('dentro" . $errores["$nombre"] . "');</script>";
-                        print($errores["$nombre"]);
                         return false;
                     }
                 } else {
                     $errores["$nombre"] = "Ha habido un error al subir el fichero";
-                    echo "<script>console.log('medio" . $errores["$nombre"] . "');</script>";
-                    print($errores["$nombre"]);
                     return false;
                 }
-            } else {
-                echo "<script>console.log('fuera" . $errores . "');</script>";
             }
         }
     }
