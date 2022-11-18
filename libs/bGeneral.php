@@ -140,6 +140,38 @@ function recogeArray(string $var): array
     return $array;
 }
 
+function newLineToBr(string $var)
+{
+    if (isset($_REQUEST[$var]) && (!is_array($_REQUEST[$var]))) {
+        $tmp = str_replace( PHP_EOL,  "<br>", $_REQUEST[$var]);
+    } else
+        $tmp = "";
+
+    echo "<script>console.log('Debug Objects: " . $tmp . "' );</script>";
+    return $tmp;
+}
+
+function brToNewLine(string $var)
+{
+    if (isset($_REQUEST[$var]) && (!is_array($_REQUEST[$var]))) {
+        $tmp = str_replace("<br>",   PHP_EOL, $_REQUEST[$var]);
+    } else
+        $tmp = "";
+
+    echo "<script>console.log('Debug Objects: " . $tmp . "' );</script>";
+    return $tmp;
+}
+
+function recogeOriginal(string $var)
+{
+    if (isset($_REQUEST[$var]) && (!is_array($_REQUEST[$var]))) {
+        $tmp = $_REQUEST[$var];
+    } else
+        $tmp = "";
+
+    return $tmp;
+}
+
 //***** Funciones de validación **** //
 
 /**

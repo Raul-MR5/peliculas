@@ -1,11 +1,14 @@
 <?php
     include ('./libs/bGeneral.php');
-    cabecera (""); //el archivo actual
+    cabecera(""); //el archivo actual
     echo "Título: ", recoge('titulo');
     echo '<br>';
     echo "Generos: ";
-    foreach (recogeArray('genero') as $g) {
-        echo $g."  ";
+    // foreach (recogeArray('genero') as $g) {
+    //     echo $g."  ";
+    // }
+    foreach (unserialize(recoge("genero")) as $g) {
+        echo "<span>$g </span>";
     }
     echo '<br>';
     echo "Fecha Estreno: ", recoge('fechaEstreno');
@@ -14,7 +17,7 @@
     echo '<br>';
     echo "Pais: ", recoge('pais');
     echo '<br>';
-    echo "Sinopsis: ", recoge('sinopsis');
+    echo "Sinopsis: ", recogeOriginal('sinopsis');
     echo '<br>';
     echo "Foto Cartel: ", "<br><img src=".recoge('fotoCartel')." width=250px>";
     echo '<br>';
